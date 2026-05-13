@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function Cart({ setPage }) {
+function Cart() {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCart();
@@ -52,8 +54,8 @@ const handlePayment = async () => {
       handler: function (response) {
         alert("Payment Successful 🎉");
          console.log(response);
-         
-        setPage("success");
+
+        navigate("/success");
        
       },
     };
