@@ -1,93 +1,89 @@
+import { useEffect, useState } from "react";
 import axios from "axios";
+import Cart from "./Cart";
+import Success from "./Success";
+
 
 function App() {
+  const [page, setPage] = useState("home");
+  const [books, setBooks] = useState([]);
 
-  const loadRazorpay = () => {
-    return new Promise((resolve) => {
+  useEffect(() => {
+    getBooks();
+  }, []);
 
-      const script = document.createElement("script");
-
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-
-      script.onload = () => {
-        resolve(true);
-      };
-
-      script.onerror = () => {
-        resolve(false);
-      };
-
-      document.body.appendChild(script);
-    });
-  };
-
-  const handlePayment = async () => {
-
-    const isLoaded = await loadRazorpay();
-
-    if (!isLoaded) {
-      alert("Razorpay SDK failed to load");
-      return;
-    }
-
+  const getBooks = async () => {
     try {
-
-      const { data } = await axios.post(
-        "http://localhost:5000/api/payment/create-order",
-        {
-          amount: 500,
-        }
-      );
-
-      const options = {
-        key: "rzp_test_SomIQBSzy1moHw",
-        amount: data.amount,
-        currency: data.currency,
-        name: "E-Shelf",
-        description: "Book Purchase",
-        order_id: data.id,
-
-        handler: function (response) {
-          alert("Payment Successful!");
-          console.log(response);
-        },
-
-        theme: {
-          color: "#3399cc",
-        },
-      };
-
-      const paymentObject = new window.Razorpay(options);
-
-      paymentObject.open();
-
-    } catch (error) {
-      console.log(error);
-      alert("Payment Failed");
+      const res = await axios.get("http://localhost:5000/api/books");
+      setBooks(res.data);
+    } catch (err) {
+      console.log(err);
     }
   };
+  const addToCart = async (book) => {
+  try {
+    await axios.post("http://localhost:5000/api/cart/add", {
+      title: book.title,
+      price: book.price,
+      image: book.image
+    });
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <button
-        onClick={handlePayment}
-        style={{
-          padding: "15px 30px",
-          fontSize: "20px",
-          cursor: "pointer",
-        }}
-      >
-        Pay Now
-      </button>
-    </div>
-  );
-}
+    alert("Added to Cart ✅");
+  } catch (err) {
+    console.log(err);
+    alert("Failed to add ❌");
+  }
+};
+
+ return (
+  <div>
+
+    {/* NAV BUTTONS */}
+    <button onClick={() => setPage("home")}>Home</button>
+    <button onClick={() => setPage("cart")}>Cart</button>
+
+    {/* CONDITIONAL RENDERING */}
+    {page === "home" ? (
+      <div style={{ padding: "20px" }}>
+        <h1>📚 E-Shelf Store</h1>
+
+        <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+          {books.map((book) => (
+            <div
+              key={book._id}
+              style={{
+                border: "1px solid #ccc",
+                padding: "10px",
+                width: "200px",
+                borderRadius: "10px",
+              }}
+            >
+              <img
+                src={book.image}
+                alt={book.title}
+                style={{ width: "100%", height: "150px", objectFit: "cover" }}
+              />
+
+              <h3>{book.title}</h3>
+              <p>₹ {book.price}</p>
+
+              <button
+                onClick={() => addToCart(book)}
+                style={{ padding: "5px 10px", cursor: "pointer" }}
+              >
+                Add to Cart
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : page === "cart" ? (
+  <Cart setPage={setPage} />
+) : (
+  <Success />
+)}
+
+  </div>
+);}
 
 export default App;
