@@ -45,7 +45,7 @@ function Login({ setUser }) {
 
       alert("Login Successful ✅");
 
-     window.location.href = "/";c
+     window.location.href = "/";
 
     } catch (err) {
 

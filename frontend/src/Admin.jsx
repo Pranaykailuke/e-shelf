@@ -1,3 +1,4 @@
+import { API } from "./config";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -26,7 +27,7 @@ function Admin() {
     try {
 
       const res = await axios.get(
-        "http://localhost:5000/api/books"
+        `${API}/api/books`
       );
 
       setBooks(res.data);

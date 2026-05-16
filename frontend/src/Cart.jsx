@@ -1,3 +1,4 @@
+import { API } from "./config";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -14,7 +15,7 @@ function Cart() {
 
  const getCart = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/cart");
+    const res = await axios.get("`${API}/api/cart`");
     setCart(res.data);
 
     // calculate total after fetching
@@ -25,7 +26,7 @@ function Cart() {
 };
   const removeItem = async (id) => {
   try {
-    await axios.delete(`http://localhost:5000/api/cart/remove/${id}`);
+    await axios.delete(`${API}/api/cart/remove/${id}`);
     getCart(); // refresh cart
   } catch (err) {
     console.log(err);
@@ -38,7 +39,7 @@ const calculateTotal = (items) => {
 const handlePayment = async () => {
   try {
     const { data } = await axios.post(
-      "http://localhost:5000/api/payment/create-order",
+      "`${API}/api/payment/create-order`",
       {
         amount: total,
       }
