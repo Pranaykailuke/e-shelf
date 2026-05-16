@@ -31,6 +31,11 @@ app.get("/", (req, res) => {
     res.json({ message: "API WORKING" });
 });
 
+
+app.get("/test", (req, res) => {
+  res.json({ message: "TEST ROUTE WORKING 🚀" });
+});
+
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
 .then(() => {
