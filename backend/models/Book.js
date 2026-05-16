@@ -13,7 +13,7 @@ const bookSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        default: ""
     },
     price: {
         type: Number,
@@ -21,11 +21,15 @@ const bookSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: true
+        default: ""
     },
-    coverImage: {
+    image: {
         type: String,
-        default: "default-book.jpg"
+        default: ""
+    },
+    rating: {
+        type: Number,
+        default: 0
     },
     stock: {
         type: Number,
