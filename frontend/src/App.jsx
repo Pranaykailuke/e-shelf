@@ -1,3 +1,4 @@
+import { API } from "./config";
 import Login from "./Login";
 import Signup from "./Signup";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
@@ -118,7 +119,7 @@ useEffect(() => {
 
   const getBooks = async () => {
     try {
-      const res = await axios.get("https://e-shelf-backend.onrender.com/api/books")
+      const res = await axios.get(`${API}/api/books`);
       setBooks(res.data);
       setLoading(false);
     } catch (err) {
@@ -128,7 +129,7 @@ useEffect(() => {
 
   const addToCart = async (book) => {
     try {
-      await axios.post("http://localhost:5000/api/cart/add", {
+      await axios.post(`${API}/api/cart/add`, {
         title: book.title,
         price: book.price,
         image: book.image,
