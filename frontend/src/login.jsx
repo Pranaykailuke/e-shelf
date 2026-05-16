@@ -1,3 +1,4 @@
+import { API } from "../config";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -25,11 +26,15 @@ function Login({ setUser }) {
 
     try {
 
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        formData
-      );
+    const res = await axios.post(
+  "https://e-shelf-backend.onrender.com/api/auth/login",
+  formData
+);
 
+      const res = await axios.post(
+      `${API}/api/auth/login`,
+      formData
+    );
       localStorage.setItem(
         "token",
         res.data.token
@@ -43,7 +48,7 @@ function Login({ setUser }) {
 
       alert("Login Successful ✅");
 
-     window.location.href = "/";
+     window.location.href = "/";c
 
     } catch (err) {
 

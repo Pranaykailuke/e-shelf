@@ -118,7 +118,7 @@ useEffect(() => {
 
   const getBooks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/books");
+      const res = await axios.get("https://e-shelf-backend.onrender.com/api/books")
       setBooks(res.data);
       setLoading(false);
     } catch (err) {
