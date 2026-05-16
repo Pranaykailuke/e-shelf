@@ -1,3 +1,4 @@
+console.log("🔥 RENDER IS RUNNING THIS FILE");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
