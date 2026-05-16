@@ -24,18 +24,21 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/payment", paymentRoutes);
 
 // Test Route
+console.log("SERVER STARTED");
+
 app.get("/", (req, res) => {
-    res.send("E-Shelf API is running!");
+    res.json({ message: "API WORKING" });
 });
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     console.log("MongoDB Connected!");
-    app.listen(process.env.PORT || 5000, () => {
-        console.log(`Server running on port 5000`);
-    });
 })
 .catch((error) => {
-    console.log("Error:", error);
+    console.log("MongoDB Connection Error:", error);
+});
+
+app.listen(process.env.PORT || 5000, () => {
+    console.log(`Server running on port ${process.env.PORT || 5000}`);
 });
